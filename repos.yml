@@ -24,8 +24,8 @@ apps:
     asset: "WorldTV-*-x86_64.flatpak"
     enabled: true
   - repo: uri-travoski/Photoshop-Photo-Studio-from-Everything-Puter
-    app_id: ""   # fill in from the bundle's app ID
+    app_id: com.puter.photostudio
     name: Photo Studio
     summary: Browser-based raster image editor
     asset: "Photo.Studio-*-x86_64.flatpak"
-    enabled: false
+    enabled: true
