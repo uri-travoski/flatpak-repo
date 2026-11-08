@@ -1,0 +1,12 @@
+# Choose which of your repos are published to Flathub.
+# Set `enabled: true` to publish an app, `false` to leave it out.
+# Each source repo needs packaging/flatpak/<app_id>.yml (a manifest with a
+# `type: dir` source of ../..), a GitHub release tagged vX.Y.Z, and metainfo
+# that passes the Flathub linter.
+apps:
+  - repo: uri-travoski/calculator-sam
+    app_id: io.github.uri_travoski.Calc
+    enabled: true
+  - repo: uri-travoski/mditor
+    app_id: io.github.uri_travoski.Mditor   # check the id in that repo's manifest first
+    enabled: false

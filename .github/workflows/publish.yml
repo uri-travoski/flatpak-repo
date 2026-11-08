@@ -1,0 +1,22 @@
+name: Publish to Flathub
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: app_id to publish even if disabled in repos.yml (optional)
+        required: false
+  repository_dispatch:
+    types: [release-published]
+  schedule:
+    - cron: '17 5 * * *'
+  push:
+    paths: [repos.yml]
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install pyyaml aiohttp tomlkit
+      - run: python3 scripts/publish.py ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+        env:
+          GH_TOKEN: ${{ secrets.FLATHUB_TOKEN }}
