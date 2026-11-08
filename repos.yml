@@ -7,6 +7,9 @@ apps:
   - repo: uri-travoski/calculator-sam
     app_id: io.github.uri_travoski.Calc
     enabled: true
+  - repo: uri-travoski/supershot
+    app_id: io.github.uri_travoski.supershot
+    enabled: true
   - repo: uri-travoski/mditor
     app_id: io.github.uri_travoski.Mditor   # check the id in that repo's manifest first
     enabled: false
