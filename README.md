@@ -1,13 +1,21 @@
-# flathub-publisher
+# flatpak-repo
 
-Publishes selected apps to Flathub.
+A signed Flatpak repository for my apps, hosted on GitHub Pages:
+https://uri-travoski.github.io/flatpak-repo/
 
-Edit `repos.yml` and set `enabled: true` for the repos to publish. The workflow
-runs on every push to `repos.yml`, daily, and on demand (Actions → Run workflow).
+```sh
+flatpak remote-add --user --if-not-exists uri-travoski https://uri-travoski.github.io/flatpak-repo/uri-travoski.flatpakrepo
+flatpak install uri-travoski io.github.uri_travoski.Calc
+```
 
-* New app: opens an "Add <app_id>" PR on flathub/flathub (human review, once).
-* Already accepted: opens an update PR on flathub/<app_id> when a new release exists.
+## Choosing which apps are published
 
-Secret `FLATHUB_TOKEN`: a GitHub token with `repo` scope.
-Local check without submitting: `python3 scripts/publish.py --dry-run`
-(needs `pip install pyyaml aiohttp tomlkit`; downloads flatpak-cargo-generator.py).
+Edit `repos.yml` and set `enabled: true` or `false` per app. The workflow runs when
+`repos.yml` changes, daily, and on demand (Actions → Run workflow). Each app is the
+Flatpak bundle attached to its repo's latest GitHub release.
+
+Signing: the private key is the `GPG_PRIVATE_KEY` secret (`GPG_KEY_ID` variable);
+`public.gpg` is the public key, also embedded in the `.flatpakrepo`.
+
+`scripts/flathub_submit.py` is an unused helper for opening Flathub submissions; Flathub
+requires a manual checklist and video, so it is not wired to any workflow.

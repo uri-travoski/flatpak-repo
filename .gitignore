@@ -1,2 +1,3 @@
-out/
+site/
+bundle.flatpak
 __pycache__/

@@ -1,15 +1,31 @@
-# Choose which of your repos are published to Flathub.
-# Set `enabled: false` to publish an app, `false` to leave it out.
-# Each source repo needs packaging/flatpak/<app_id>.yml (a manifest with a
-# `type: dir` source of ../..), a GitHub release tagged vX.Y.Z, and metainfo
-# that passes the Flathub linter.
+# Choose which of your apps are in the Flatpak repository.
+# Set `enabled: true` to publish an app, `false` to leave it out. The site is
+# rebuilt whenever this file changes, daily, and on demand.
+#
+# Each app is its latest GitHub release's Flatpak bundle: `asset` is a glob
+# matching the bundle's file name among the release assets.
 apps:
   - repo: uri-travoski/calculator-sam
     app_id: io.github.uri_travoski.Calc
-    enabled: false
+    name: Calculator.Sam
+    summary: Minimal, fast calculator with exact decimal results
+    asset: "sam-calc.flatpak"
+    enabled: true
   - repo: uri-travoski/supershot
     app_id: io.github.uri_travoski.supershot
-    enabled: false
-  - repo: uri-travoski/mditor
-    app_id: io.github.uri_travoski.Mditor   # check the id in that repo's manifest first
+    name: SuperShot
+    summary: Lightweight screenshot and annotation tool
+    asset: "io.github.uri_travoski.supershot-*.flatpak"
+    enabled: true
+  - repo: uri-travoski/iptv-player
+    app_id: com.worldtv.WorldTV
+    name: WorldTV
+    summary: IPTV player for Xtream logins and M3U playlists
+    asset: "WorldTV-*-x86_64.flatpak"
+    enabled: true
+  - repo: uri-travoski/Photoshop-Photo-Studio-from-Everything-Puter
+    app_id: ""   # fill in from the bundle's app ID
+    name: Photo Studio
+    summary: Browser-based raster image editor
+    asset: "Photo.Studio-*-x86_64.flatpak"
     enabled: false

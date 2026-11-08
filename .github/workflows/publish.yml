@@ -1,22 +1,47 @@
-name: Publish to Flathub
+name: Publish Flatpak repository
 on:
   workflow_dispatch:
-    inputs:
-      only:
-        description: app_id to publish even if disabled in repos.yml (optional)
-        required: false
   repository_dispatch:
     types: [release-published]
   schedule:
     - cron: '17 5 * * *'
   push:
-    paths: [repos.yml]
+    branches: [main]
+    paths: [repos.yml, scripts/build_repo.py, public.gpg]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - run: pip install pyyaml aiohttp tomlkit
-      - run: python3 scripts/publish.py ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+      - run: sudo apt-get update -q && sudo apt-get install -y -q flatpak ostree gnupg && pip install pyyaml
+      - name: Import signing key
         env:
-          GH_TOKEN: ${{ secrets.FLATHUB_TOKEN }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        run: echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+      - name: Build the repository
+        env:
+          GPG_KEY_ID: ${{ vars.GPG_KEY_ID }}
+        run: python3 scripts/build_repo.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
